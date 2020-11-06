@@ -25,7 +25,7 @@ class InvoiceController extends Controller
                 return $invoice->due_date ? $invoice->due_date->format('d/m/Y') : NULL;
             })
             ->editColumn('pay_day', function ($invoice) {
-                return $invoice->pay_day ? $invoice->pay_day->format('d/m/Y') : __('templateDashboardArgon::admin.financials.not_found');
+                return $invoice->pay_day ? $invoice->pay_day->format('d/m/Y') : __('templateDashboardArgon::dashboard.financials.not_found');
             })
             ->addColumn('action', function ($invoice) {
                 return '<div class="btn-group btn-group-sm float-right" role="group">
@@ -51,7 +51,7 @@ class InvoiceController extends Controller
 
     public function index()
     {
-        return view(Config::get('cw_financial.views') . 'invoices.index');
+        return view(cwView('invoices.index', true));
     }
 
     public function create()

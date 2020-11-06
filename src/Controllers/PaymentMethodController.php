@@ -4,6 +4,7 @@ namespace ConfrariaWeb\Financial\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -22,7 +23,7 @@ class PaymentMethodController extends Controller
         $paymentMethods = resolve('PaymentMethodService')->all();
         return DataTables::of($paymentMethods)
             ->editColumn('status', function ($paymentMethod) {
-                return $paymentMethod->status ? __('templateDashboardArgon::admin.activated') : __('templateDashboardArgon::admin.disabled');
+                return $paymentMethod->status ? __('templateDashboardArgon::dashboard.activated') : __('templateDashboardArgon::dashboard.disabled');
             })
             ->addColumn('action', function ($paymentMethod) {
                 return '<div class="btn-group btn-group-sm float-right" role="group">
@@ -48,38 +49,41 @@ class PaymentMethodController extends Controller
 
     public function index()
     {
-        return view(Config::get('cw_financial.views') . 'payment-methods.index');
+        abort_unless(Auth::user()->hasRole('administrator'), 403);
+        return view(cwView('payment-methods.index', true));
     }
 
     public function create()
     {
-        return view(Config::get('cw_financial.views') . 'payment-methods.create');
+        abort_unless(Auth::user()->hasRole('administrator'), 403);
+        return view(cwView('payment-methods.create', true));
     }
 
     public function store(Request $request)
     {
-        //
+        abort_unless(Auth::user()->hasRole('administrator'), 403);
     }
 
     public function show($id)
     {
+        abort_unless(Auth::user()->hasRole('administrator'), 403);
         $this->data['invoice'] = resolve('InvoiceService')->find($id);
-        return view(Config::get('cw_financial.views') . 'invoices.show', $this->data);
+        return view(cwView('invoices.show', $this->data, true));
     }
 
     public function edit($id)
     {
-        //
+        abort_unless(Auth::user()->hasRole('administrator'), 403);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        abort_unless(Auth::user()->hasRole('administrator'), 403);
     }
 
 
     public function destroy($id)
     {
-        //
+        abort_unless(Auth::user()->hasRole('administrator'), 403);
     }
 }

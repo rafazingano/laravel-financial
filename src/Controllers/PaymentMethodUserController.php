@@ -27,7 +27,7 @@ class PaymentMethodUserController extends Controller
                 return $PaymentMethodUser->paymentMethod->name;
             })
             ->editColumn('status', function ($PaymentMethodUser) {
-                return $PaymentMethodUser->status ? __('templateDashboardArgon::admin.activated') : __('templateDashboardArgon::admin.disabled');
+                return $PaymentMethodUser->status ? __('templateDashboardArgon::dashboard.activated') : __('templateDashboardArgon::dashboard.disabled');
             })
             ->addColumn('action', function ($PaymentMethodUser) {
                 return '<div class="btn-group btn-group-sm float-right" role="group">

@@ -29,7 +29,7 @@ class FinancialServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../Views', 'financial');
         $this->loadMigrationsFrom(__DIR__ . '/../../databases/Migrations');
         $this->publishes([__DIR__ . '/../../config/cw_financial.php' => config_path('cw_financial.php')], 'config');
-        $this->registerSeedsFrom(__DIR__ . '/../../databases/Seeds');
+        //$this->registerSeedsFrom(__DIR__ . '/../../databases/Seeds');
 
         if ($this->app->runningInConsole()) {
             $this->commands([

@@ -1,4 +1,4 @@
-<table class="table align-items-center table-flush table-striped table-hover" id="payment-methods-table">
+<table class="table dataTable table-flush table-striped table-hover" id="payment-methods-table">
     <thead class="thead-light">
         <tr>
             <th>Nome</th>
