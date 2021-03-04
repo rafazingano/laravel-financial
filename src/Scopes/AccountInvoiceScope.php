@@ -15,10 +15,11 @@ class AccountInvoiceScope implements Scope
         if (
             !app()->runningInConsole() &&
             existsAccount() &&
-            Cache::has('accountID') &&
+            account() &&
             Auth::check()
         ) {
-            $builder->where('financial_invoices.account_id', Cache::get('accountID'));
+            $account = account();
+            $builder->where('financial_invoices.account_id', $account->id);
         }else if(Auth::check()){
             $builder->where('financial_invoices.user_id', Auth::id());
         }
