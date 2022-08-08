@@ -2,17 +2,29 @@
 
 namespace ConfrariaWeb\Financial\Services;
 
-use ConfrariaWeb\Financial\Contracts\FinancialContract;
-use ConfrariaWeb\Vendor\Traits\ServiceTrait;
+use Carbon\Carbon;
+use ConfrariaWeb\Financial\Models\Financial;
 
 class FinancialService
 {
-    use ServiceTrait;
 
-    public function __construct(FinancialContract $financial)
+    protected $financial;
+
+    public function __construct(Financial $financial)
     {
-        $this->obj = $financial;
+        $this->financial = $financial;
     }
 
+    public function all()
+    {
+        return $this->financial->all();
+    }
 
+    public function create($data)
+    {
+        $dt = Carbon::now();
+        $d = $dt->carbonize('2019-03-21');
+        $data['initial_date'] = empty($data['initial_date'])? $dt->toDateTimeString() : $data['initial_date'];
+        return $this->financial->create($data);
+    }
 }

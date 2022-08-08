@@ -1,6 +1,6 @@
 {
     "name": "confrariaweb/laravel-financial",
-    "version": "dev-master",
+    "version": "1.0.0",
     "description": "Financial system in laravel",
     "keywords": [
         "financial",
@@ -16,8 +16,9 @@
         }
     ],
     "require": {
-        "confrariaweb/laravel-cielo": "dev-master",
-        "confrariaweb/laravel-vendor": "dev-master"
+        "confrariaweb/laravel-cielo": "1.0.0",
+        "confrariaweb/laravel-vendor": "1.0.0",
+        "nesbot/carbon": "^2.58.0"
     },
     "autoload": {
         "psr-4": {

@@ -13,6 +13,20 @@ class CreateFinancialsTable extends Migration
      */
     public function up()
     {
+
+        Schema::create('financials', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            //$table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->morphs('financialable');
+            $table->string('period');
+            $table->timestamp('initial_date');
+            $table->decimal('amount', 8, 2);
+            $table->integer('quotas')->nullable();
+            $table->boolean('status')->default(1);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('financial_payment_methods', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
@@ -23,54 +37,32 @@ class CreateFinancialsTable extends Migration
 
         Schema::create('financial_payment_method_user', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('payment_method_id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('payment_method_id')->constrained('financial_payment_methods')->onUpdate('cascade')->onDelete('cascade');
+            //$table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->morphs('financialable', 'financial_payment_method_user_financialable_type_id_index');
             $table->boolean('status')->default(1);
             $table->json('options')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('payment_method_id')
-                ->references('id')
-                ->on('financial_payment_methods')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
         });
 
         Schema::create('financial_invoices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            //$table->foreignId('financial_id')->constrained('financials')->onUpdate('cascade')->onDelete('cascade');
+            //$table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->morphs('invoiceable');
             $table->string('code');
-            $table->decimal('price', 8, 2);
+            $table->decimal('amount', 8, 2);
             $table->json('options')->nullable();
             $table->timestamp('due_date', 0);
             $table->timestamp('pay_day', 0)->nullable();
-
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
-
             $table->timestamps();
             $table->softDeletes();
         });
 
         Schema::create('financial_billing_returns', function (Blueprint $table) {
-            $table->unsignedBigInteger('invoice_id');
+            $table->foreignId('invoice_id')->constrained('financial_invoices')->onUpdate('cascade')->onDelete('cascade');
             $table->json('options');
-
-            $table->foreign('invoice_id')
-                ->references('id')
-                ->on('financial_invoices')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
             $table->timestamps();
             $table->softDeletes();
         });
@@ -87,5 +79,6 @@ class CreateFinancialsTable extends Migration
         Schema::dropIfExists('financial_invoices');
         Schema::dropIfExists('financial_payment_method_user');
         Schema::dropIfExists('financial_payment_methods');
+        Schema::dropIfExists('financials');
     }
 }
