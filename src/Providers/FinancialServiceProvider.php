@@ -2,12 +2,10 @@
 
 namespace ConfrariaWeb\Financial\Providers;
 
-use ConfrariaWeb\Vendor\Traits\ProviderTrait;
 use Illuminate\Support\ServiceProvider;
 
 class FinancialServiceProvider extends ServiceProvider
 {
-    use ProviderTrait;
 
     public function boot()
     {
